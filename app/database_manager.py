@@ -12,7 +12,7 @@ class DatabaseManager:
   Manages the database connection and operations.
   """
 
-  def __init__(self, host:str, user:str, password:str, database:str):
+  def __init__(self, host:str, user:str, password:str, database:str) -> None:
     """
     Initializes the DatabaseManager and establishes a database connection.
     
@@ -31,7 +31,7 @@ class DatabaseManager:
     except Error as e:
       print(f"Error connecting to database: {e}")
 
-  def close_connection(self):
+  def close_connection(self) -> None:
     """
     Closes the database connection if it is open.
     """
