@@ -10,13 +10,19 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   python_app:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
@@ -24,7 +30,7 @@ services:
       DB_NAME: ${DB_NAME}
     volumes:
       - .:/app
-    command: python main.py
+    command: python -m app.main
 
 volumes:
   db_data:

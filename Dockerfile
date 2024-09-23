@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy the requirements file to install dependencies
 COPY requirements.txt ./
 
+# Copy the application code into the container
+COPY app/ ./app/
+
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Command to run your Python script (overridden by docker-compose)
-CMD ["python", "main.py"]
+CMD ["python", "-m", "main.py"]
