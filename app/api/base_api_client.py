@@ -42,12 +42,14 @@ class BaseAPIClient:
     url = f"{self.base_url}{endpoint}"
     try:
 
-      logger.info(f"Making GET request to '{url}'.")
+      logger.debug(f"Making GET request to {url}.")
 
       logger.debug(f"Headers: {headers}'")
       
       response = requests.get(url, params=params, headers=headers)
       response.raise_for_status()
+
+      logger.info(f"Request made with succes on {url}.")
 
       return response
     
