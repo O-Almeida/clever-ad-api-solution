@@ -11,6 +11,9 @@ def setup_logging() -> str:
     Creates a new log file per execution with the start time in the filename.
     """
 
+    # Setup log level via env variable (INFO defualt)
+    log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
+
     # Create a timestamp for the log filename
     timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -29,7 +32,7 @@ def setup_logging() -> str:
 
     # Configure the root logger
     logging.basicConfig(
-        level=logging.INFO,
+        level=getattr(logging, log_level, logging.INFO),
         format="%(asctime)s %(name)s [%(levelname)s]: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[
