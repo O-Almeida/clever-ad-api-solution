@@ -5,9 +5,11 @@ Base module for API clients.
 """
 
 
+import logging
 from typing import Optional
 import requests
 
+logger = logging.getLogger(__name__)
 
 class BaseAPIClient:
   """
@@ -36,11 +38,21 @@ class BaseAPIClient:
     Returns:
       requests (Response): The response object.
     """
-    url:str = f"{self.base_url}{endpoint}"
+
+    url = f"{self.base_url}{endpoint}"
     try:
-      response:requests.Response = requests.get(url, params=params, headers=headers)
+
+      logger.info(f"Making GET request to '{url}'.")
+
+      logger.debug(f"Headers: {headers}'")
+      
+      response = requests.get(url, params=params, headers=headers)
       response.raise_for_status()
+
       return response
+    
     except requests.RequestException as e:
-      print(f"GET request failed: {e}")
+      
+      logger.error(f"GET rquest failed: {e}")
+      
       return None
