@@ -1,0 +1,41 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "33061:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  python_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      LOG_LEVEL: ${LOG_LEVEL}
+    volumes:
+      - ./app:/app
+      - ./logs:/app/logs
+    command: python main.py
+
+volumes:
+  db_data:

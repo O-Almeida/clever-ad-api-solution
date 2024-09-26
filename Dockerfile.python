@@ -1,0 +1,29 @@
+# Use the official Python slim image
+FROM python:3.9-slim
+
+# Create a non-root user
+RUN useradd -ms /bin/bash admin
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file to install dependencies
+COPY requirements.txt /app/
+
+# Copy the application code into the container
+COPY app/ /app/ 
+
+# Create logs directory and set permissions before switching users
+RUN mkdir -p /app/logs && chmod -R 777 /app/logs && chown -R admin:admin /app
+
+# Create Download directory and set permissions before switching users
+RUN chmod -R 777 /app/download && chown -R admin:admin /app
+
+# Switch to the non-root user
+USER admin
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Command to run your Python script (overridden by docker-compose)
+CMD ["python", "/app/main.py"]

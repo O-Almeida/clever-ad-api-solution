@@ -1,0 +1,52 @@
+# Exclude environment files
+.env
+
+# Exclude git repository files
+.git
+.gitignore
+
+# Exclude Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Exclude virtual environment directories
+venv/
+env/
+ENV/
+
+# Exclude MacOS system files
+.DS_Store
+
+# Exclude logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# Exclude any data files (if they should not be included)
+data/
+*.csv
+*.xlsx
+*.xls
+
+# Exclude test directories and files
+tests/
+test/
+*.test.py
+
+# Exclude build artifacts
+build/
+dist/
+*.egg-info/
+
+# Exclude coverage reports
+.coverage
+htmlcov/
+
+# Exclude Docker Compose override files
+docker-compose.override.yml
+
+# Exclude editor and IDE configuration files
+.vscode/
+.idea/
