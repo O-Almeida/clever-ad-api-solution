@@ -17,7 +17,7 @@ COPY app/ /app/
 RUN mkdir -p /app/logs && chmod -R 777 /app/logs && chown -R admin:admin /app
 
 # Create Download directory and set permissions before switching users
-RUN chmod -R 777 /app/download && chown -R admin:admin /app
+RUN mkdir -p /app/download && chmod -R 777 /app/download && chown -R admin:admin /app
 
 # Switch to the non-root user
 USER admin
