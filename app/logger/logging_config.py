@@ -24,7 +24,7 @@ def setup_logging() -> str:
     log_filename = f"app_{timestamp_str}_{pid}.log"
 
     # Log directory
-    log_dir = os.path.join(os.getcwd(), "app/logs")
+    log_dir = os.path.join(os.getcwd(), "logs")
     os.makedirs(log_dir, exist_ok=True)
 
     # Full path to the log file
