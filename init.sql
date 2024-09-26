@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS Censos (
+    id VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    state_code VARCHAR(255) DEFAULT NULL,
+    value FLOAT DEFAULT NULL,
+    PRIMARY KEY (id)
+);

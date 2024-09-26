@@ -1,17 +1,20 @@
 services:
   db:
-    image: mysql:8.0
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "33061:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", 'mysqladmin ping']
+      test: ["CMD", "/healthcheck.sh"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -19,7 +22,7 @@ services:
   python_app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.python
     depends_on:
       db:
         condition: service_healthy
@@ -28,9 +31,11 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
+      LOG_LEVEL: ${LOG_LEVEL}
     volumes:
-      - .:/app
-    command: python -m app.main
+      - ./app:/app
+      - ./logs:/app/logs
+    command: python main.py
 
 volumes:
   db_data:
